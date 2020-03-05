@@ -33,7 +33,7 @@ namespace CycleThroughFiles.Commands
     /// <summary>
     /// VS Package that provides this command, not null.
     /// </summary>
-    private readonly Package _package;
+    private readonly AsyncPackage _package;
 
     private readonly DTE2 _dte;
 
@@ -45,7 +45,7 @@ namespace CycleThroughFiles.Commands
     /// </summary>
     /// <param name="package">Owner package, not null.</param>
     /// <param name="commandService">Command service to add command to, not null.</param>
-    private CycleThroughFilesCommand(Package package)
+    private  CycleThroughFilesCommand(AsyncPackage package)
     {
       _package = package ?? throw new ArgumentNullException(nameof(package));
      
@@ -95,10 +95,10 @@ namespace CycleThroughFiles.Commands
     /// Initializes the singleton instance of the command.
     /// </summary>
     /// <param name="package">Owner package, not null.</param>
-    public static void  Initialize(Package package)
+    public static async Task InitializeAsync(AsyncPackage package)
     {
-     
-       Instance = new CycleThroughFilesCommand(package);
+      await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+      Instance =  new CycleThroughFilesCommand(package);
       
 
     }

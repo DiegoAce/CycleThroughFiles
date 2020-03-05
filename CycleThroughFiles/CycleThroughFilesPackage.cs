@@ -24,11 +24,11 @@ namespace CycleThroughFiles
   /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
   /// </para>
   /// </remarks>
-  [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = false)]
+  [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
   [Guid(CycleThroughFilesPackage.PackageGuidString)]
   [ProvideMenuResource("Menus.ctmenu", 1)]
 
-  public sealed class CycleThroughFilesPackage : Package
+  public sealed class CycleThroughFilesPackage : AsyncPackage
   {
     /// <summary>
     /// CycleThroughFilesPackage GUID string.
@@ -37,14 +37,20 @@ namespace CycleThroughFiles
 
     #region Package Members
 
-    
-
-    protected override void Initialize()
+    protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
     {
+      // When initialized asynchronously, the current thread may be a background thread at this point.
+      // Do any initialization that requires the UI thread after switching to the UI thread.
+      await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
       base.Initialize();
-      CycleThroughFilesCommand.Initialize(this);
-      CycleThroughFilesReverseCommand.Initialize(this);
+
+      await CycleThroughFilesCommand.InitializeAsync(this);
+      await CycleThroughFilesReverseCommand.InitializeAsync(this);
+
+
+
     }
+
 
     #endregion
   }

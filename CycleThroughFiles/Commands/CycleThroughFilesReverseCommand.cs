@@ -85,16 +85,22 @@ namespace CycleThroughFiles.Commands
       private set;
     }
 
-    
+
 
     /// <summary>
     /// Initializes the singleton instance of the command.
     /// </summary>
     /// <param name="package">Owner package, not null.</param>
-    public static void  Initialize(Package package)
+    /// <summary>
+    /// Initializes the singleton instance of the command.
+    /// </summary>
+    /// <param name="package">Owner package, not null.</param>
+    public static async Task InitializeAsync(AsyncPackage package)
     {
-     
-       Instance = new CycleThroughFilesReverseCommand(package);
+      await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+      Instance = new CycleThroughFilesReverseCommand(package);
+
+
     }
 
     /// <summary>
