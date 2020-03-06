@@ -3,7 +3,8 @@
     <Metadata>
         <Identity Id="CycleThroughFiles.9a3cbadb-9dde-4ea8-b0e6-1a7df53debb9" Version="1.0" Language="en-US" Publisher="Carl Verret" />
         <DisplayName>CycleThroughFiles</DisplayName>
-        <Description xml:space="preserve">Navigation helper between files in a folder that have the same name (without extension)Na</Description>
+        <Description xml:space="preserve">Navigation helper between files in a folder that have the same name (without extension).
+Just replace the regular F7 shortcut with CycleThroughFiles (and Shift-F7 with reverse)</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
